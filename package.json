@@ -20,6 +20,10 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@tsconfig/react-native": "^3.0.5",
+    "@types/jest": "^29.5.12",
+    "@types/react": "^18.2.73",
+    "@types/react-test-renderer": "^18.0.7",
     "drizzle-kit": "^0.20.14",
     "typescript": "^5.4.3"
   },
