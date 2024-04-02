@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { LessonSlideView } from "./LessonSlideView";
+// import { LessonViewProps } from "../../types/navigatorTypes";
 
-// import { LessonSlideView } from "./LessonSlideView";
-
-type LessonProps = {
-    lessonId: number
+interface LessonProps {
+    lessonId: number;
 }
 
-export const LessonView: React.FC<LessonProps> = function({ lessonId }) {
+export const LessonView: React.FC = () => {
   const [lessonSlide, setLessonSlide] = useState(0);
 
   // TODO Get slides from database

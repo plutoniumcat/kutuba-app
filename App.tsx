@@ -1,13 +1,20 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { RootStackParamList } from './types/navigatorTypes';
 import { LessonView } from './components/lessons/LessonView';
+
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <LessonView lessonId={1} />
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="LessonView" component={LessonView} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
