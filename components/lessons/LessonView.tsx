@@ -1,13 +1,16 @@
 import React, { useState } from "react";
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { View, StyleSheet, Text } from "react-native";
 import { LessonSlideView } from "./LessonSlideView";
+import { LessonViewScreenProps, RootStackParamList } from "../../types/navigatorTypes";
 // import { LessonViewProps } from "../../types/navigatorTypes";
 
 interface LessonProps {
     lessonId: number;
 }
 
-export const LessonView: React.FC = () => {
+export const LessonView: React.FC<LessonViewScreenProps> = ({route, navigation}: LessonViewScreenProps) => {
+  const lessonId = route.params;
   const [lessonSlide, setLessonSlide] = useState(0);
 
   // TODO Get slides from database
