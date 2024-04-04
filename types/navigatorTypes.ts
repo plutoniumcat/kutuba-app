@@ -8,4 +8,6 @@ export type RootStackParamList = {
     LessonView: {lessonId: number};
   };
 
+export type MainMenuScreenProps = NativeStackScreenProps<RootStackParamList, 'MainMenu'>;
+
 export type LessonViewScreenProps = NativeStackScreenProps<RootStackParamList, 'LessonView'>;
