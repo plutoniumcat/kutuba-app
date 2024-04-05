@@ -1,9 +1,12 @@
 import React from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, FlatList, Dimensions } from "react-native";
+
+const SCREEN_WIDTH = Dimensions.get('window').width;
 
 type SlideProps = {
     slideId: number
 }
+
 
 export const LessonSlideView: React.FC<SlideProps> = function ({ slideId }) {
     return (
