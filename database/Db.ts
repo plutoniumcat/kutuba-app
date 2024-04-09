@@ -172,10 +172,9 @@ async function getDatabase(): Promise<ExpoSQLiteDatabase<typeof schema>> {
     return openDbConnection("/");
   }
 
-// Close the connection to the database
 async function close(): Promise<void> {
     if (sqliteDb === undefined) {
-      console.log("[db] Close db failed as db connection is already closed");
+      console.log("[db] Close db failed; db connection is already closed");
       return;
     }
     const status = await sqliteDb.closeAsync();
@@ -183,16 +182,15 @@ async function close(): Promise<void> {
     db = undefined;
   }
 
-  // Listen to app state changes. Close the database when the app is put into the background (or enters the "inactive" state)
+  // Listen to app state changes.
 let appState = "active";
-console.log("[db] Adding listener to handle app state changes");
+console.log("[db] Adding listener for app state changes");
 AppState.addEventListener("change", handleAppStateChange);
 
 // Handle the app going from foreground to background, and vice versa.
 // TODO Does the app correctly reconnect when becoming active or do I need to do that here?
 function handleAppStateChange(nextAppState: AppStateStatus) {
   if (appState === "active" && nextAppState.match(/inactive|background/)) {
-    // App has moved from the foreground into the background (or become inactive)
     console.log("[db] App has gone to the background - closing DB connection.");
     close();
   }

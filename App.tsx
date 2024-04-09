@@ -1,22 +1,28 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { AppStateStatus, StyleSheet } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { RootStackParamList } from './types/navigatorTypes';
+import { DatabaseProvider } from './contexts/DatabaseContext';
 import { LessonView } from './components/lessons/LessonView';
 import { MainMenu } from './components/mainMenu/MainMenu';
+
+// Track as variable rather than state- do not want to rerender on change
+let appState: AppStateStatus;
 
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName='MainMenu'>
-        <Stack.Screen name="MainMenu" component={MainMenu} />
-        <Stack.Screen name="LessonView" component={LessonView} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <DatabaseProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName='MainMenu'>
+          <Stack.Screen name="MainMenu" component={MainMenu} />
+          <Stack.Screen name="LessonView" component={LessonView} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </DatabaseProvider>
   );
 }
 
