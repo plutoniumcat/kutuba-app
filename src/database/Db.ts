@@ -1,13 +1,11 @@
 import * as SQLite from 'expo-sqlite/next';
 import * as FileSystem from 'expo-file-system';
 import { drizzle } from "drizzle-orm/expo-sqlite";
-import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
-// import migrations from '../../drizzle/migrations';
 import { eq, lt } from 'drizzle-orm';
 import { ExpoSQLiteDatabase } from 'drizzle-orm/expo-sqlite';
 import { AppState, AppStateStatus } from "react-native";
 import { DATABASE } from "./Constants";
-// import { DatabaseInitialization } from "./DatabaseInitialization";
+import { schema } from './DatabaseInitialization';
 import { LessonSchema } from '../schema/LessonSchema';
 import { LessonSlideSchema } from '../schema/LessonSlideSchema';
 import { Lesson } from "../models/Lesson";
@@ -31,26 +29,8 @@ export interface Db {
 }
 
 let sqliteDb: SQLite.SQLiteDatabase | undefined;
-let db: ExpoSQLiteDatabase<typeof schema> | undefined;
+export let db: ExpoSQLiteDatabase<typeof schema> | undefined;
 
-const schema = {
-    ...LessonSchema,
-    ...LessonSlideSchema
-  };
-
-// export function databaseMigration() {
-//   // Drizzle migrations on App start
-//   const { success, error } = useMigrations(db, migrations);
-
-//   if (error) {
-//     return  "Migration error: " + error.message;
-//   }
-
-//   if (!success) {
-//   return "Migration is in progress..."
-//   }
-
-// }
 
 async function openDatabase(pathToDatabaseFile: string): Promise<SQLite.SQLiteDatabase> {
     // Return existing sqlitedb connection if already open
@@ -80,9 +60,6 @@ async function openDbConnection(pathToDatabaseFile: string): Promise<ExpoSQLiteD
     const dbConn = drizzle(sqlDb, { schema: { schema } });
     return dbConn;
 }
-
-// const dbConn = await openDatabase("/");
-// db = await getDatabase();
 
 const getLesson = async (lessonId: number): Promise<Lesson> => {
     return getDatabase()

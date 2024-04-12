@@ -1,0 +1,172 @@
+{
+  "version": "5",
+  "dialect": "sqlite",
+  "id": "3d41598c-4384-4fc3-930e-c99ece71e3e2",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "tables": {
+    "LESSONS": {
+      "name": "LESSONS",
+      "columns": {
+        "ID": {
+          "name": "ID",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "LESSON_NUM": {
+          "name": "LESSON_NUM",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "TITLE": {
+          "name": "TITLE",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "DESCRIPTION": {
+          "name": "DESCRIPTION",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "COMPLETED": {
+          "name": "COMPLETED",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "LESSON_SLIDES": {
+      "name": "LESSON_SLIDES",
+      "columns": {
+        "ID": {
+          "name": "ID",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "LESSON_ID": {
+          "name": "LESSON_ID",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "TITLE": {
+          "name": "TITLE",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "ITEM_1": {
+          "name": "ITEM_1",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "ITEM_2": {
+          "name": "ITEM_2",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "ITEM_3": {
+          "name": "ITEM_3",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "ITEM_4": {
+          "name": "ITEM_4",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "ITEM_5": {
+          "name": "ITEM_5",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "ITEM_6": {
+          "name": "ITEM_6",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "ITEM_7": {
+          "name": "ITEM_7",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "ITEM_8": {
+          "name": "ITEM_8",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "ITEM_9": {
+          "name": "ITEM_9",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "ITEM_10": {
+          "name": "ITEM_10",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "LESSON_SLIDES_LESSON_ID_LESSONS_ID_fk": {
+          "name": "LESSON_SLIDES_LESSON_ID_LESSONS_ID_fk",
+          "tableFrom": "LESSON_SLIDES",
+          "tableTo": "LESSONS",
+          "columnsFrom": [
+            "LESSON_ID"
+          ],
+          "columnsTo": [
+            "ID"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    }
+  },
+  "enums": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  }
+}
