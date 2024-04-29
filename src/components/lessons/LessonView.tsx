@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Text, FlatList, Dimensions, ListRenderItem } from "react-native";
 import { LessonViewScreenProps } from "../../types/navigatorTypes";
 import { LessonSlide } from "../../models/LessonSlide";
+import { Lesson } from "../../models/Lesson";
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const testSlideArr: LessonSlide[] = [
   {
-    id: 1,
+    slideId: 1,
     lessonId: 1,
     title: "Slide 1",
     item1: "text1",
@@ -22,13 +23,13 @@ const testSlideArr: LessonSlide[] = [
     item10: null,
   },
   {
-    id: 2,
+    slideId: 2,
     lessonId: 1,
     title: "Slide 2",
     item1: "text1",
-    item2: "text1",
-    item3: "text1",
-    item4: "text1",
+    item2: "text2",
+    item3: "text3",
+    item4: "text4",
     item5: null,
     item6: null,
     item7: null,
@@ -41,23 +42,28 @@ const testSlideArr: LessonSlide[] = [
 const renderSlide: ListRenderItem<LessonSlide> = ({ item }) => (
   <View style={{ width: SCREEN_WIDTH, flex: 1 }} >
     <Text>{ item.title }</Text>
+    <Text>{ item.item1 }</Text>
+    <Text>{ item.item2 }</Text>
+    <Text>{ item.item3 }</Text>
+    <Text>{ item.item4 }</Text>
   </View>
 );
 
 export const LessonView: React.FC<LessonViewScreenProps> = ({route, navigation}: LessonViewScreenProps) => {
   const lessonId = route.params;
-  const [lessonSlides, setLessonSlides] = useState(0);
+  const [lessonSlides, setLessonSlides] = useState(testSlideArr);
 
   // TODO Get slides from database
-
-
+  useEffect(() => {
+    setLessonSlides(lessonSlides);
+  }, [lessonSlides])
 
   return (
     <View style={styles.container} testID="lessonView">
       <FlatList
-        data={testSlideArr}
+        data={lessonSlides}
         renderItem={renderSlide}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={item => item.slideId!.toString()}
         horizontal
         pagingEnabled
       />

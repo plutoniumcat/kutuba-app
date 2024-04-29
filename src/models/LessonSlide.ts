@@ -1,5 +1,5 @@
 export class LessonSlide {
-    slide_id: number;
+    slideId: number;
     lessonId: number | null;
     title: string | null;
     item1: string | null;
@@ -13,10 +13,10 @@ export class LessonSlide {
     item9: string | null;
     item10: string | null;
 
-    constructor(slide_id: number, lessonId: number | null, title: string | null, item1: string | null, item2: string | null, 
+    constructor(slideId: number, lessonId: number | null, title: string | null, item1: string | null, item2: string | null, 
         item3: string | null, item4: string | null, item5: string | null, item6: string | null, item7: string | null, 
         item8: string | null, item9: string | null, item10: string | null) {
-            this.slide_id = slide_id;
+            this.slideId = slideId;
             this.lessonId = lessonId;
             this.title = title;
             this.item1 = item1;
