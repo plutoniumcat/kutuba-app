@@ -1,7 +1,8 @@
 export const tableSchema = new Map<string, string>(
     [
         [
-            "lessons", `CREATE TABLE IF NOT EXISTS Lesson(
+            "lessons", 
+            `CREATE TABLE IF NOT EXISTS Lesson(
             lesson_id INTEGER PRIMARY KEY NOT NULL,
             lesson_num INTEGER,
             title TEXT,
@@ -10,7 +11,8 @@ export const tableSchema = new Map<string, string>(
           );`
         ],
         [
-            "lessonSlides", ` CREATE TABLE IF NOT EXISTS LessonSlides(
+            "lessonSlides", 
+            ` CREATE TABLE IF NOT EXISTS LessonSlides(
                 slide_id INTEGER PRIMARY KEY NOT NULL,
                 lesson_id INTEGER,
                 title TEXT,
@@ -33,7 +35,7 @@ export const seedData = new Map<string, string>(
     [
         [
             "lessons", 
-            `INSERT INTO Lessons VALUES(1, 1, 'test lesson', 'a test lesson', false)`
+            `INSERT INTO Lessons VALUES(1, 1, 'test lesson', 'a test lesson', false)`,
         ],
         [
             "lessonSlides", 

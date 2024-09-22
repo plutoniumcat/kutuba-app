@@ -11,6 +11,10 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "packagerOpts": {
+      "assetExts": ["db"],
+      "sourceExts": ["db"]
+    },
     "assetBundlePatterns": [
       "**/*"
     ],

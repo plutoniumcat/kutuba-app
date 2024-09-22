@@ -5,20 +5,23 @@ import { NavigationContainer } from '@react-navigation/native';
 import { RootStackParamList } from './src/types/navigatorTypes';
 import { LessonView } from './src/components/lessons/LessonView';
 import { MainMenu } from './src/components/mainMenu/MainMenu';
+import { DatabaseProvider } from './src/contexts/DatabaseContext';
 
 // Track as variable rather than state- do not want to rerender on change
 let appState: AppStateStatus;
 
-
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='MainMenu'>
-        <Stack.Screen name="MainMenu" component={MainMenu} />
-        <Stack.Screen name="LessonView" component={LessonView} />
-      </Stack.Navigator>
+      <DatabaseProvider>
+        <Stack.Navigator initialRouteName='MainMenu'>
+          <Stack.Screen name="MainMenu" component={MainMenu} />
+          <Stack.Screen name="LessonView" component={LessonView} />
+        </Stack.Navigator>
+      </DatabaseProvider>
     </NavigationContainer>
   );
 }

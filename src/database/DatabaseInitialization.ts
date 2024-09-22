@@ -3,52 +3,58 @@ import { tableSchema, seedData } from './createTables';
 import { version } from 'react';
 
 export class DatabaseInitialization {
+  public initDb(database: SQLite.SQLiteDatabase): Promise<void> {
+    return database.transactionAsync(async (tx) => {
+      console.log("[db] Creating tables...")
+      this.createTables(tx)
+    }).then(() => {
+      database.transactionAsync(async (tx) => {
+        console.log("[db] Seeding database...")
+        this.seedDatabase(tx);
+      });
+    });
+  }
+
   // Perform any updates to the database schema. These can occur during initial configuration, or after an app store update.
   // This should be called each time the database is opened.
-
-  public initDb(database: SQLite.SQLiteDatabase): Promise<void> {
-    this.updateDatabaseTables(database);
-    return database.transactionAsync(async (tx) => {
-      this.seedDatabase(tx);
-    })
-  }
   
-  public updateDatabaseTables(database: SQLite.SQLiteDatabase): Promise<void> {
-    let dbVersion: number = 0;
-    console.log("[db] Beginning database updates...");
+  // private updateDatabaseTables(database: SQLite.SQLiteDatabase): Promise<void> {
+  //   let dbVersion: number = 0;
+  //   console.log("[db] Beginning database updates...");
 
-    // First: create tables if they do not already exist
-    return database
-      .transactionAsync(async tx => {
-        this.createTables(tx)
-      })
-      .then(() => {
-        // Get the current database version
-        return this.getDatabaseVersion(database);
-      })
-      .then((version: number) => {
-        dbVersion = version;
-        console.log("Current database version is: " + dbVersion);
+  //   // First: create tables if they do not already exist
+  //   return database
+  //     .transactionAsync(async tx => {
+  //       console.log("[db] Creating tables...")
+  //       this.createTables(tx)
+  //     })
+  //     .then(() => {
+  //       // Get the current database version
+  //       return this.getDatabaseVersion(database);
+  //     })
+  //     .then((version: number) => {
+  //       dbVersion = version;
+  //       console.log("Current database version is: " + dbVersion);
 
-        // Perform DB updates based on this version
+  //       // Perform DB updates based on this version
 
-        // This is included as an example of how you make database schema changes once the app has been shipped
-        if (dbVersion < 1) {
-          // Uncomment the next line, and the referenced function below, to enable this
-          // return database.transaction(this.preVersion1Inserts);
-        }
-        // otherwise,
-        return;
-      })
-      .then(() => {
-        if (dbVersion < 2) {
-          // Uncomment the next line, and the referenced function below, to enable this
-          // return database.transaction(this.preVersion2Inserts);
-        }
-        // otherwise,
-        return;
-      });
-  }
+  //       // This is included as an example of how you make database schema changes once the app has been shipped
+  //       if (dbVersion < 1) {
+  //         // Uncomment the next line, and the referenced function below, to enable this
+  //         // return database.transaction(this.preVersion1Inserts);
+  //       }
+  //       // otherwise,
+  //       return;
+  //     })
+  //     .then(() => {
+  //       if (dbVersion < 2) {
+  //         // Uncomment the next line, and the referenced function below, to enable this
+  //         // return database.transaction(this.preVersion2Inserts);
+  //       }
+  //       // otherwise,
+  //       return;
+  //     });
+  // }
 
   // Perform initial setup of the database tables
   private createTables(transaction: SQLite.SQLTransactionAsync) {
@@ -56,14 +62,14 @@ export class DatabaseInitialization {
     const dropAllTables = false;
     if (dropAllTables) {
         tableSchema.forEach((key, value) => {
-            console.log(`[db] Creating table ${key}.`)
+            console.log(`[db] Dropping table ${key}.`)
             transaction.executeSqlAsync(`DROP TABLE IF EXISTS ?`, [key]);
         });
     }
 
     tableSchema.forEach((key, value) => {
         console.log(`[db] Creating table ${key}.`)
-        transaction.executeSqlAsync(value);
+        transaction.executeSqlAsync(key);
     });
 
     // Version table

@@ -10,7 +10,7 @@ import { Lesson } from "../models/Lesson";
 export interface Database {
   // Read
   getLesson(lessonId: number): Promise<Lesson | null>;
-//   getLessonSlides(lessonId: number): Promise<LessonSlide[]>;
+  getLessonSlides(lessonId: number): Promise<LessonSlide[] | null>;
 //   getReviewCards(date: number): Promise<Card[]>;
 // TODO Get settings
   // Update
@@ -67,8 +67,58 @@ async function getLesson(lessonId: number): Promise<Lesson | null> {
         // TODO error handling
         return null;
     }
-    }
+  }
 
+
+  async function getLessonSlides(lessonId: number): Promise<LessonSlide[] | null> {
+    try {
+      const db = await getDatabase();
+      console.log("[db] Fetching lesson slides from database") // Stops here
+      const result = await new Promise<LessonSlide[] | null>((resolve, reject) => {
+        db.transactionAsync(
+            async (tx) => {
+              console.log("[db] commencing transaction")
+              const lessonSlides: LessonSlide[] = [];
+                await tx.executeSqlAsync(`SELECT * FROM LessonSlides WHERE lesson_id = ?;`, [lessonId]).
+                then(resultSet => {
+                  if (resultSet.rows.length > 0) {
+                    console.log("[db] results length greater than 0")
+                      for (let i = 0; i < resultSet.rows.length; i++) {
+                        const slide = new LessonSlide(
+                          resultSet.rows[i].slideId, 
+                          resultSet.rows[i].lessonId, 
+                          resultSet.rows[i].title, 
+                          resultSet.rows[i].item1,
+                          resultSet.rows[i].item2,
+                          resultSet.rows[i].item3,
+                          resultSet.rows[i].item4,
+                          resultSet.rows[i].item5,
+                          resultSet.rows[i].item6,
+                          resultSet.rows[i].item7,
+                          resultSet.rows[i].item8,
+                          resultSet.rows[i].item9,
+                          resultSet.rows[i].item10,
+                        );
+                        lessonSlides.push(slide);
+                      }
+                      console.log("[db] returning lesson slides")
+                      resolve(lessonSlides);
+                  } else {
+                      console.log("[db] no lesson slides found")
+                      resolve(null);
+                  }
+                })
+            },
+        );
+    });
+    console.log("[db] returning promise object")
+    return result;
+    } catch (error) {
+        // TODO error handling
+        console.log(error)
+        return null;
+    }
+  }
 // // Get lesson slides (array)
 // async function getLessonSlides(lessonId: number): Promise<LessonSlide[]> {
 //   console.log("[db] Fetching lesson slides from db...");
@@ -135,27 +185,11 @@ async function open(): Promise<SQLite.SQLiteDatabase> {
 
   // Perform any database initialization or updates, if needed
   const databaseInitialization = new DatabaseInitialization();
-  await databaseInitialization.updateDatabaseTables(db);
+  await databaseInitialization.initDb(db);
 
   databaseInstance = db;
   return db;
 }
-
-async function openDatabase(pathToDatabaseFile: string): Promise<SQLite.SQLiteDatabase> {
-    if (!(await FileSystem.getInfoAsync(FileSystem.documentDirectory + 'SQLite')).exists) {
-      await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'SQLite');
-    }
-    const asset = await Asset.fromModule(require(pathToDatabaseFile)).downloadAsync();
-    if (asset.localUri) {
-        await FileSystem.copyAsync({
-            from: asset.localUri,
-            to: FileSystem.documentDirectory + 'SQLite/' + DATABASE.FILE_NAME,
-          });
-          return SQLite.openDatabase(DATABASE.FILE_NAME);
-    } else {
-        throw Error("[db] asset.localUri was null")
-    }
-  }
 
 // Close the connection to the database
 async function close(): Promise<void> {
@@ -187,7 +221,7 @@ function handleAppStateChange(nextAppState: AppStateStatus) {
 export const sqliteDatabase: Database = {
   // Read
   getLesson,
-//   getLessonSlides,
+  getLessonSlides,
 //   getReviewCards,
   // Update
 //   updateLessonStatus,
